@@ -1,5 +1,5 @@
 # Ref: https://dev.to/aws-builders/containerize-react-app-with-docker-for-production-572b
-# stage1 - build react app first 
+# stage1 - build react app first
 FROM node:lts-alpine3.14 as build
 ARG PORT
 
@@ -12,10 +12,11 @@ RUN npm run build
 
 # stage 2 - build the final image and copy the react build files
 FROM node:lts-alpine3.14
-WORKDIR /app
-COPY --from=build /app/build /app
-
+COPY --from=build /app/dist /app
+COPY --from=build /app/package.json /app
 ENV PORT=${PORT}
 EXPOSE ${PORT}
+WORKDIR /app
+RUN npm i
 ENTRYPOINT [ "npm" ]
-CMD ["run"]
+CMD ["run", "start-prod"]

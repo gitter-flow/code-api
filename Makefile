@@ -1,4 +1,4 @@
-IMAGE=quay.io/gitter/gitter-app
+IMAGE=quay.io/gitter/gitter-code-api
 TAG_DEV=latest
 DOCKERFILE_DEV=Dockerfile
 TAG_PROD=1.0.0

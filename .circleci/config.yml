@@ -14,19 +14,18 @@ executors:
 jobs:
   build-and-test:
     docker:
-      - image: lts-alpine3.14
+      - image: node:alpine3.14
     steps:
       - checkout
       - run:
           name: Build
           command: |
             npm install
-            npm run-dev
       - run:
           name: Test
           command: echo "Not implemented yet."
 
-  docker-security:
+  docker-build-security:
     executor: security-report/default
     working_directory: /root/app
     steps:
@@ -62,25 +61,6 @@ jobs:
           command: |
             make build-docker-dev
 
-  deploy-docker:
-    docker:
-      - image: quay.io/paulbarrie7/docker:latest
-    working_directory: /root/app
-    steps:
-      - checkout
-      - setup_remote_docker:
-          docker_layer_caching: false
-          version: 20.10.11
-      - run:
-          name: "Build the image"
-          command: |
-            make build-docker-prod
-      - run:
-          name: "Deploy the image"
-          command: |
-            echo $QUAY_PASSWORD | docker login -u $QUAY_LOGIN --password-stdin quay.io
-            make deploy-docker-prod
-
 workflows:
   test:
     when: << pipeline.parameters.pull_request >>
@@ -88,19 +68,11 @@ workflows:
       - build-and-test:
             context:
               - ci-gitter
-      - docker-security:
+      - docker-build-security:
             context:
               - ci-gitter
-
   dev:
     when: << pipeline.parameters.pull_request >>
     jobs:
       - build-docker-dev
-
-  deploy:
-    when: << pipeline.parameters.pull_request >>
-    jobs:
-      - deploy-docker:
-          context:
-            - ci-gitter
 
