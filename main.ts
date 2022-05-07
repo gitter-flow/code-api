@@ -21,8 +21,6 @@ app.use(fileUpload({
 
 buildRoutes(app);
 
-// requestToDB("toto").then(r => console.log("here"))
-
 
 const port = parseInt(process.env.apiport as string) || 3000;
 app.listen(port, function () {
