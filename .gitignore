@@ -106,3 +106,7 @@ uploads/
 .idea
 node_modules
 .tern-port
+
+uploads/
+
+package-lock.json
