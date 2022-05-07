@@ -4,6 +4,7 @@ import Express from 'express';
 import {buildRoutes} from "./routes";
 import bodyParser from "body-parser";
 import fileUpload from "express-fileupload";
+import {requestToDB} from "./services/bdd/neo4j";
 let cors = require('cors');
 // import {insertFirstData} from './FirstData';
 
@@ -19,6 +20,8 @@ app.use(fileUpload({
 }));
 
 buildRoutes(app);
+
+// requestToDB("toto").then(r => console.log("here"))
 
 
 const port = parseInt(process.env.apiport as string) || 3000;
