@@ -2,7 +2,7 @@ FROM node:alpine3.14
 ARG PORT
 
 USER root
-WORKDIR /home/app
+WORKDIR /app
 
 COPY package.json .
 COPY tsconfig.json .
