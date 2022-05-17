@@ -11,7 +11,7 @@ openfaasRouter.post('/', async (req, res) => {
             message: 'No file uploaded'
         }).end();
     }
-    openfassController.sendRequest(/*req.files!.file1 as UploadedFile*/)
+    OpenfassController.sendRequest(/*req.files!.file1 as UploadedFile*/)
         .then(() => {
             res.status(204).json({
                 message: "OK",

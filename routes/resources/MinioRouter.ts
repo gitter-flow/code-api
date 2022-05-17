@@ -39,7 +39,7 @@ minioRouter.post('/code', async (req, res) => {
     MinioController.senfFileToMinio(req.body.namefile as string, code)
         .then((result) => {
             res.status(201).json({
-                etage: result
+                result
             }).end()
         })
         .catch((error: any) => {
