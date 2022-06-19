@@ -1,30 +1,31 @@
 import Express from 'express';
 import {OpenfassController} from "../../controllers/OpenfassController";
-import {MinioController} from "../../controllers/MinioController";
 import {UploadedFile} from "express-fileupload";
-import {Readable} from "stream";
+
 const openfaasRouter = Express.Router();
 
-openfaasRouter.post('/run', async (req, res) => {
-    OpenfassController.execCodeOpenFaas(req.body)
-        .then((result: string) => {
-            MinioController.senfFileToMinio(req.body.namefile as string, req.body.data) //save du code
-            /* tslint:disable-next-line: no-string-literal */
-            // const dataStream = Readable['from']([result])
-            // MinioController.senfFileToMinio("save_" + req.body.namefile as string, dataStream) //save de l'output d'openfaas
-            res.status(200).json({
-                message: result,
+openfaasRouter.post('/', async (req, res) => {
+    const openfassController = await OpenfassController.getInstance();
+    if(!req.files) {
+        res.send({
+            message: 'No file uploaded'
+        }).end();
+    }
+    openfassController.sendRequest(/*req.files!.file1 as UploadedFile*/)
+        .then(() => {
+            res.status(204).json({
+                message: "OK",
             }).end()
         })
-        .catch((error: any) => {
+        .catch((error) => {
             res.status(400).end()
             console.log(error);
         });
 })
 
-
-openfaasRouter.post('/exec', async (req, res) => {
-    OpenfassController.execCodeOpenFaas(req.body)
+openfaasRouter.get('/', async (req, res) => {
+    const openfassController = await OpenfassController.getInstance();
+    openfassController.execCodeOpenFaas(req.body.data)
         .then((result: string) => {
             res.status(200).json({
                 message: result,
