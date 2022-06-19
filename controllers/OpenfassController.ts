@@ -1,24 +1,14 @@
 import {UploadedFile} from "express-fileupload";
 import axios from "axios";
+import {MinioController} from "../controllers/MinioController";
+import {Readable} from "stream";
 
 export class OpenfassController {
-
-    public static async sendRequest(/*file: UploadedFile*/) {
-        // file.mv('./uploads/' + file.name);
-        await axios.get("https://raw.githubusercontent.com/openfaas/faas/master/api-docs/swagger.yml")
-            .then((res) => {
-                console.log(res)
-                return
-            })
-            .catch((e) => {
-                console.log(e)
-            });
-    }
 
     public static execCodeOpenFaas(body: string) {
         return axios({
             method:"get", // tester en POST
-            url: "http://127.0.0.1:8080/function/executor",
+            url: process.env.URL_OPENFAAS,
             data: body
         })
             .then((res) => {

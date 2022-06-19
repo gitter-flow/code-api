@@ -34,8 +34,7 @@ minioRouter.get('/code', async (req, res) => {
 
 
 minioRouter.post('/code', async (req, res) => {
-    let code: Readable = req.body.data
-
+    const code = Readable['from']([req.body.data])
     MinioController.senfFileToMinio(req.body.namefile as string, code)
         .then((result) => {
             res.status(201).json({

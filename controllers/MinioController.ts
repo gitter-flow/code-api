@@ -30,7 +30,8 @@ export class MinioController {
     }
 
     public static async senfFileToMinio(fileName: string, code: Readable) {
-        return minio().putObject(process.env.MINIO_BUCKET, fileName, code)
+        console.log(process.env.MINIO_BUCKET)
+        return minio().putObject(process.env.MINIO_BUCKET, "oto", "toto")
     }
 
     public sendExecutionCode(etagSourceCode: string) {
