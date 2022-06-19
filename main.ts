@@ -21,7 +21,6 @@ app.use(fileUpload({
 
 buildRoutes(app);
 
-
 const port = parseInt(process.env.apiport as string) || 3000;
 app.listen(port, function () {
     console.log('listening on ' + port);
