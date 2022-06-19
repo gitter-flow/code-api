@@ -5,13 +5,13 @@ import {UploadedFile} from "express-fileupload";
 const openfaasRouter = Express.Router();
 
 openfaasRouter.post('/', async (req, res) => {
-    const openfassController = await OpenfassController.getInstance();
+    // const openfassController = await OpenfassController.getInstance();
     if(!req.files) {
         res.send({
             message: 'No file uploaded'
         }).end();
     }
-    openfassController.sendRequest(/*req.files!.file1 as UploadedFile*/)
+    OpenfassController.sendRequest(/*req.files!.file1 as UploadedFile*/)
         .then(() => {
             res.status(204).json({
                 message: "OK",
@@ -24,8 +24,8 @@ openfaasRouter.post('/', async (req, res) => {
 })
 
 openfaasRouter.get('/', async (req, res) => {
-    const openfassController = await OpenfassController.getInstance();
-    openfassController.execCodeOpenFaas(req.body.data)
+    // const openfassController = await OpenfassController.getInstance();
+    OpenfassController.execCodeOpenFaas(req.body.data)
         .then((result: string) => {
             res.status(200).json({
                 message: result,
