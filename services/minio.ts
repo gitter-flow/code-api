@@ -6,12 +6,11 @@ export function minio() {
 
     let minioClient;
     minioClient = new Minio.Client({
-        endPoint: process.env.MINIO_URL,
-        useSSL: true,
-        port: 443,
-        accessKey: process.env.MINIO_USER,
+        endPoint: process.env.MINIO_HOST,
+        useSSL: false,
+        port: process.env.MINIO_PORT,
+        accessKey: process.env.MINIO_ACCESS_KEY,
         secretKey: process.env.MINIO_SECRETKEY,
-        // region: 'us-east-2'
     });
 
     minioClient.traceOn(process.stdout)
