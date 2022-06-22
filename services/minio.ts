@@ -1,16 +1,15 @@
-// import Minio from 'minio';
-
 
 export function minio() {
     const Minio = require('minio');
 
+    // console.log(parseInt(port));
     let minioClient;
     minioClient = new Minio.Client({
-        endPoint: '127.0.0.1',
-        port: 9000,
+        endPoint: process.env.MINIO_HOST,
+        port: Number(process.env.MINIO_PORT),
         useSSL: false,
-        accessKey: 'minio_admin',
-        secretKey: 'minio1234'
+        accessKey: process.env.MINIO_ACCESS_KEY,
+        secretKey: process.env.MINIO_SECRET_KEY
     });
 
     // let versioningConfig = {Status:"Enabled"}

@@ -17,11 +17,15 @@ export class OpenfassController {
     }
 
     public static execCodeOpenFaas(body: string) {
-        return axios({
-            method:"get", // tester en POST
-            url: "http://127.0.0.1:8080/function/executor",
-            data: body
-        })
+        const options = {
+            auth: {
+                username: 'admin',
+                password: 'admin'
+            },
+            headers: {"content-type": "application/json"}
+        }
+
+        return axios.post(process.env.OPENFAAS_URL + "function/executor", body, options)
             .then((res) => {
                 return res.data
             })

@@ -1,7 +1,8 @@
 import {minio} from "../services/minio";
 import {Readable} from "stream";
 import {BucketItemStat} from "minio";
-import {throws} from "assert";
+import {OpenfassController} from "./OpenfassController";
+// import {throws} from "assert";
 
 
 export class MinioController {
@@ -33,8 +34,19 @@ export class MinioController {
         return minio().putObject(process.env.MINIO_BUCKET, fileName, code)
     }
 
-    public sendExecutionCode(etagSourceCode: string) {
+    public static async senfFileToMinioAndExec(fileName: string, codeToInsert: string, codeToExec: string) {
 
+        let openfaasRes = [await OpenfassController.execCodeOpenFaas(codeToExec)];
+        console.log(openfaasRes)
+        // const codeToInsertStream = Readable.from([temp], { objectMode: false })
+        // const resOpenFaasStream = Readable.from([openfaasRes], { objectMode: false })
+
+        let res = {
+            "minio_code": await minio().putObject(process.env.MINIO_BUCKET, fileName, codeToInsert as string),
+            "minio_result_code": await minio().putObject(process.env.MINIO_BUCKET, fileName + "_res", openfaasRes.toString()),
+            "result_of_exec" : openfaasRes
+        }
+        return res
     }
 
 }

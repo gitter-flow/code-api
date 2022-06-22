@@ -1,6 +1,5 @@
 import Express from "express";
 import {MinioController} from "../../controllers/MinioController";
-import {BucketItemStat} from "minio";
 import {Readable} from "stream";
 
 const minioRouter = Express.Router();
@@ -37,6 +36,21 @@ minioRouter.post('/code', async (req, res) => {
     let code: Readable = req.body.data
 
     MinioController.senfFileToMinio(req.body.namefile as string, code)
+        .then((result) => {
+            res.status(201).json({
+                result
+            }).end()
+        })
+        .catch((error: any) => {
+            res.status(400).end()
+            console.log(error);
+        });
+
+})
+
+minioRouter.put('/code', async (req, res) => {
+
+    MinioController.senfFileToMinioAndExec(req.body.namefile as string, req.body.data.data as string, req.body.data as string)
         .then((result) => {
             res.status(201).json({
                 result
