@@ -6,7 +6,7 @@ import {minioRouter} from "./MinioRouter";
 const apiRouter = Express.Router();
 
 // apiRouter.use('/userrole', userRoleRouter);
-apiRouter.use('/openfaas', openfaasRouter)
+apiRouter.use('/exec', openfaasRouter)
 apiRouter.use('/minio', minioRouter)
 
 export {
