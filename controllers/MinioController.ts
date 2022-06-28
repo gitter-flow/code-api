@@ -2,8 +2,7 @@ import {minio} from "../services/minio";
 import {Readable} from "stream";
 import {BucketItemStat} from "minio";
 import {OpenfassController} from "./OpenfassController";
-import {throws} from "assert";
-import {log} from "util";
+// import {throws} from "assert";
 
 
 
@@ -25,8 +24,13 @@ export class MinioController {
         return minio().putObject(process.env.MINIO_BUCKET, fileName, code)
     }
 
-    public static end = function () {
-        throw "lalala"
+    public static async deleteFile(nameFile: string) {
+        try {
+        await minio().removeObject(process.env.MINIO_BUCKET, nameFile);
+        await minio().removeObject(process.env.MINIO_BUCKET, nameFile + "_res");
+        } catch (e) {
+            throw "bad request";
+        }
     }
 
     public static async senfFileToMinioAndExec(fileName: string, codeToInsert: string, codeToExec: string) {
@@ -56,16 +60,13 @@ export class MinioController {
         // }
 
 
-        let openfaasRes = [await OpenfassController.execCodeOpenFaas(codeToExec)];
+        let openfaasRes = await OpenfassController.execCodeOpenFaas(codeToExec);
         return {
             "minio_code": await minio().putObject(process.env.MINIO_BUCKET, fileName, codeToInsert as string),
             "minio_result_code": await minio().putObject(process.env.MINIO_BUCKET, fileName + "_res", openfaasRes.toString()),
             "result_of_exec": openfaasRes
         }
     }
+}
 
-}
-function end(chunks: string[]): any {
-    throw new Error("Function not implemented.");
-}
 

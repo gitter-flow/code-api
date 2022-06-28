@@ -10,7 +10,7 @@ export class OpenfassController {
             },
             headers: {"content-type": "application/json"}
         }
-        console.log(body)
+        // console.log(body)
         return axios.post(process.env.OPENFAAS_URL + "function/executor", body, options)
             .then((res) => {
                 return res.data

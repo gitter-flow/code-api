@@ -59,7 +59,20 @@ minioRouter.put('/code', async (req, res) => {
             res.status(400).end()
             console.log(error);
         });
+})
 
+minioRouter.delete('/code', async (req, res) => {
+
+    MinioController.deleteFile(req.body.namefile as string)
+        .then((result) => {
+            res.status(204).json({
+                result
+            }).end()
+        })
+        .catch((error: any) => {
+            res.status(400).end()
+            console.log(error);
+        });
 })
 
 minioRouter.get('/versions', async (req, res) => {
