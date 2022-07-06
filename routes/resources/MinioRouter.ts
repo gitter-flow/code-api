@@ -75,7 +75,7 @@ minioRouter.delete('/code', async (req, res) => {
         });
 })
 
-minioRouter.get('/versions', async (req, res) => {
+minioRouter.post('/versionsoffile', async (req, res) => {
 
     MinioController.getAllFileVersions(req.body.namefile as string)
         .then((dataStream) => {
@@ -97,7 +97,7 @@ minioRouter.get('/versions', async (req, res) => {
         });
 })
 
-minioRouter.get('/version', async (req, res) => {
+minioRouter.post('/fileversion', async (req, res) => {
 
     MinioController.getFileByVersion(req.body.namefile as string, req.body.version_of_file as string)
         .then((dataStream) => {
