@@ -6,7 +6,7 @@
   "scripts": {
     "start-dev": "nodemon main.ts",
     "start:prod": "node -r dotenv/config main.js",
-    "build": "tsc -p .",
+    "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

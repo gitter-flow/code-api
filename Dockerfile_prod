@@ -1,22 +1,24 @@
 # Ref: https://dev.to/aws-builders/containerize-react-app-with-docker-for-production-572b
 # stage1 - build react app first
-FROM node:lts-alpine3.14 as build
+FROM node:14-alpine3.10 as build
 ARG PORT
 
 WORKDIR /app
-ENV PATH /app/node_modules/.bin:$PATH
-COPY ./package.json /app/
-RUN npm install
-COPY . /app
+COPY package*.json ./
+COPY tsconfig*.json ./
+RUN  npm install
+COPY . ./
 RUN npm run build
 
-# stage 2 - build the final image and copy the react build files
-FROM node:lts-alpine3.14
-COPY --from=build /app/dist /app
-COPY --from=build /app/package.json /app
-ENV PORT=${PORT}
-EXPOSE ${PORT}
+FROM node:14-alpine3.10 as ts-remover
 WORKDIR /app
-RUN npm i
-ENTRYPOINT [ "npm" ]
-CMD ["run", "start-prod"]
+COPY --from=build /app/package*.json ./
+COPY --from=build /app/build ./
+RUN npm install --only=production
+
+# # stage 2 - build the final image and copy the react build files
+FROM gcr.io/distroless/nodejs:14
+WORKDIR /usr/app
+COPY --from=ts-remover /app ./
+USER 1000
+CMD ["main.js"]

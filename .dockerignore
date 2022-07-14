@@ -1,2 +1,4 @@
 Dockerfile
 Dockerfile_prod
+node_modules
+package-lock.json

@@ -1,6 +1,7 @@
 import Express from "express";
 import {MinioController} from "../../controllers/MinioController";
 import {Readable} from "stream";
+import { Console } from "console";
 
 const minioRouter = Express.Router();
 
@@ -98,6 +99,10 @@ minioRouter.get('/versionsoffile', async (req, res) => {
 })
 
 minioRouter.get('/fileversion', async (req, res) => {
+    const version = req.query.version_of_file as string
+    const file = req.query.namefile as string
+    console.log(`version: ${version}`)
+    console.log(`file: ${file}`)
 
     MinioController.getFileByVersion(req.query.namefile as string, req.query.version_of_file as string)
         .then((dataStream) => {
